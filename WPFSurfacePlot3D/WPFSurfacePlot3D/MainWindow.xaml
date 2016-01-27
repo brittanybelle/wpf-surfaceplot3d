@@ -3,10 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         xmlns:local="clr-namespace:WPFSurfacePlot3D"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="FileExit_Click"/>
+            </MenuItem>
+        </Menu>
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowCoordinateSystem="True">
+            <h:HelixViewport3D.Camera>
+                <!-- HelixViewport3D.ZoomExtentsWhenLoaded will figure out the position of the Camera -->
+                <PerspectiveCamera LookDirection="5,10,-10" UpDirection="0,0,1"/>
+            </h:HelixViewport3D.Camera>
+
+            <!-- Lights -->
+            <ModelVisual3D Content="{Binding Lights}"/>
+
+            <!-- The plot visual (surface, axes and labels) -->
+            <local:SurfacePlotVisual3D Points="{Binding Data}" ColorValues="{Binding ColorValues}" SurfaceBrush="{Binding SurfaceBrush}"/>
+
+        </h:HelixViewport3D>
+    </DockPanel>
 </Window>
