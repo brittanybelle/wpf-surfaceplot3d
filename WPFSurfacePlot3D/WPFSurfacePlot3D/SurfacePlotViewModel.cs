@@ -22,10 +22,12 @@ namespace WPFSurfacePlot3D
 
     class SurfacePlotViewModel : INotifyPropertyChanged
     {
-        private int defaultSampleSize = 100;
-
-        //private double[] xDataPointsArray, yDataPointsArray;
-
+        private int defaultFunctionSampleSize = 100;
+        
+        // So the overall goal of this section is to output the appropriate values to SurfacePlotVisual3D - namely,
+        // - DataPoints as Point3D, plus xAxisTicks (and y, z) as double[]
+        // - plus all the appropriate properties, which can be directly edited/bindable by the user
+        
         public SurfacePlotViewModel()
         {
             Title = "New Surface Plot";
@@ -33,25 +35,34 @@ namespace WPFSurfacePlot3D
             YAxisLabel = "y-Axis";
             ZAxisLabel = "z-Axis";
 
-            MinX = 0;
-            MaxX = 3;
-            MinY = 0;
-            MaxY = 3;
-            Rows = 91;
-            Columns = 91;
-
-            Function = (x, y) => Math.Sin(x * y) * 0.5;
             ColorCoding = ColorCoding.ByLights;
-            UpdateModel();
-            //UpdatePlotData();
+
+            // Initialize the DataPoints collection
+            Func<double, double, double> sampleFunction = (x, y) => 10 * Math.Sin(Math.Sqrt(x * x + y * y)) / Math.Sqrt(x * x + y * y);
+            PlotFunction(sampleFunction, -10, 10);
         }
 
         #region === Public Methods ===
 
+        /*
+        public void PlotData(double[,] zData2DArray)
+        {
+            // Uses indices as x, y values
+        }
+
+        public void PlotData(double[,] zData2DArray, double[] xArray, double[] yArray)
+        {
+            // Note - check that dimensions match!!
+        }
+
+        public void PlotData(Point3D[,] point3DArray)
+        {
+            // Directly plot from a Point3D array
+        } */
 
         public void PlotFunction(Func<double, double, double> function, double minimumXY, double maximumXY)
         {
-            PlotFunction(function, minimumXY, maximumXY, minimumXY, maximumXY, defaultSampleSize, defaultSampleSize);
+            PlotFunction(function, minimumXY, maximumXY, minimumXY, maximumXY, defaultFunctionSampleSize, defaultFunctionSampleSize);
         }
 
         public void PlotFunction(Func<double, double, double> function, double minimumXY, double maximumXY, int sampleSize)
@@ -61,7 +72,7 @@ namespace WPFSurfacePlot3D
 
         public void PlotFunction(Func<double, double, double> function, double xMinimum, double xMaximum, double yMinimum, double yMaximum)
         {
-            PlotFunction(function, xMinimum, xMaximum, yMinimum, yMaximum, defaultSampleSize, defaultSampleSize);
+            PlotFunction(function, xMinimum, xMaximum, yMinimum, yMaximum, defaultFunctionSampleSize, defaultFunctionSampleSize);
         }
 
         public void PlotFunction(Func<double, double, double> function, double xMinimum, double xMaximum, double yMinimum, double yMaximum, int sampleSize)
@@ -80,17 +91,17 @@ namespace WPFSurfacePlot3D
             double[] xArray = CreateLinearlySpacedArray(xMinimum, xMaximum, xSampleSize);
             double[] yArray = CreateLinearlySpacedArray(yMinimum, yMaximum, ySampleSize);
 
-            Data = CreateDataArrayFromFunction(function, xArray, yArray);
+            DataPoints = CreateDataArrayFromFunction(function, xArray, yArray);
             switch (ColorCoding)
             {
                 case ColorCoding.ByGradientY:
-                    ColorValues = FindGradientY(Data);
+                    ColorValues = FindGradientY(DataPoints);
                     break;
                 case ColorCoding.ByLights:
                     ColorValues = null;
                     break;
             }
-            RaisePropertyChanged("Data");
+            RaisePropertyChanged("DataPoints");
             RaisePropertyChanged("ColorValues");
             RaisePropertyChanged("SurfaceBrush");
         }
@@ -125,17 +136,22 @@ namespace WPFSurfacePlot3D
             return array;
         }
 
+        /*
         private void SetTicksAutomatically()
         {
             xTickMin = xMin;
             xTickMax = xMax;
             xNumberOfTicks = 10;
-            xTickInterval = (xTickMax - xTickMin) / xNumberOfTicks;
-        }
+            xTickInterval = (xTickMax - xTickMin) / (xNumberOfTicks - 1);
+            for (int i = 0; i < xNumberOfTicks; i++)
+            {
+                //xTickMin
+            }
+        } */
 
         #endregion
 
-        #region === Properties & Event Handlers ===
+        #region === Exposed Properties ===
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -155,13 +171,42 @@ namespace WPFSurfacePlot3D
             set
             {
                 dataPoints = value;
-                RaisePropertyChanged("DataPoints");
+                //RaisePropertyChanged("DataPoints");
             }
         }
 
-        #endregion
+        private double[] xAxisTicks;
+        public double[] XAxisTicks
+        {
+            get { return xAxisTicks; }
+            set
+            {
+                xAxisTicks = value;
+                //RaisePropertyChanged("DataPoints");
+            }
+        }
 
-        #region === String/Text Properties ===
+        private double[] yAxisTicks;
+        public double[] YAxisTicks
+        {
+            get { return yAxisTicks; }
+            set
+            {
+                yAxisTicks = value;
+                //RaisePropertyChanged("DataPoints");
+            }
+        }
+
+        private double[] zAxisTicks;
+        public double[] ZAxisTicks
+        {
+            get { return zAxisTicks; }
+            set
+            {
+                zAxisTicks = value;
+                //RaisePropertyChanged("DataPoints");
+            }
+        }
 
         private string title;
         public string Title
@@ -207,10 +252,6 @@ namespace WPFSurfacePlot3D
             }
         }
 
-        #endregion
-
-        #region === Boolean Properties ===
-
         private bool showSurfaceMesh;
         public bool ShowSurfaceMesh
         {
@@ -246,110 +287,7 @@ namespace WPFSurfacePlot3D
 
         #endregion
 
-        #region === Double Properties ===
-
-        private double xMin;
-        public double XMin
-        {
-            get { return xMin; }
-            set
-            {
-                xMin = value;
-                RaisePropertyChanged("XMin");
-            }
-        }
-
-        private double xMax;
-        public double XMax
-        {
-            get { return xMax; }
-            set
-            {
-                xMax = value;
-                RaisePropertyChanged("XMax");
-            }
-        }
-
-        private double yMin;
-        public double YMin
-        {
-            get { return yMin; }
-            set
-            {
-                yMin = value;
-                RaisePropertyChanged("YMin");
-            }
-        }
-
-        private double yMax;
-        public double YMax
-        {
-            get { return yMax; }
-            set
-            {
-                yMax = value;
-                RaisePropertyChanged("YMax");
-            }
-        }
-        
-        private double zMin;
-        public double ZMin
-        {
-            get { return zMin; }
-            set
-            {
-                zMin = value;
-                RaisePropertyChanged("ZMin");
-            }
-        }
-
-        private double zMax;
-        public double ZMax
-        {
-            get { return zMax; }
-            set
-            {
-                zMax = value;
-                RaisePropertyChanged("ZMax");
-            }
-        }
-        
-        private double xTickInterval;
-        public double XTickInterval
-        {
-            get { return xTickInterval; }
-            set
-            {
-                xTickInterval = value;
-                RaisePropertyChanged("XTickInterval");
-            }
-        }
-
-        private double yTickInterval;
-        public double YTickInterval
-        {
-            get { return yTickInterval; }
-            set
-            {
-                yTickInterval = value;
-                RaisePropertyChanged("YTickInterval");
-            }
-        }
-
-        private double zTickInterval;
-        public double ZTickInterval
-        {
-            get { return zTickInterval; }
-            set
-            {
-                zTickInterval = value;
-                RaisePropertyChanged("ZTickInterval");
-            }
-        }
-        
-        #endregion
-
-        #region === Int Properties ===
+        /* // Do we actually need to keep any of these persistent variables for any reason...? (binding?)
 
         private int xNumberOfPoints;
         private int yNumberOfPoints;
@@ -358,24 +296,12 @@ namespace WPFSurfacePlot3D
         private int yNumberOfTicks;
         private int zNumberOfTicks;
 
-        private double xTickMin, xTickMax, yTickMin, yTickMax, zTickMin, zTickMax;
-        //private double xTickInterval, yTickInterval, zTickInterval;
-
-        #endregion
-
-
+        private double xTickInterval, yTickInterval, zTickInterval;
+        private double xTickMin, xTickMax, yTickMin, yTickMax, zTickMin, zTickMax; */
+        private double xMin, xMax, yMin, yMax, zMin, zMax;
 
         /* OLD STUFF */
 
-        public double MinX { get; set; }
-        public double MinY { get; set; }
-        public double MaxX { get; set; }
-        public double MaxY { get; set; }
-        public int Rows { get; set; }
-        public int Columns { get; set; }
-
-        public Func<double, double, double> Function { get; set; }
-        public Point3D[,] Data { get; set; }
         public double[,] ColorValues { get; set; }
 
         public ColorCoding ColorCoding { get; set; }
@@ -417,42 +343,6 @@ namespace WPFSurfacePlot3D
                 }
                 return null;
             }
-        }
-
-        private void UpdateModel()
-        {
-            Data = CreateDataArray(Function);
-            switch (ColorCoding)
-            {
-                case ColorCoding.ByGradientY:
-                    ColorValues = FindGradientY(Data);
-                    break;
-                case ColorCoding.ByLights:
-                    ColorValues = null;
-                    break;
-            }
-            RaisePropertyChanged("Data");
-            RaisePropertyChanged("ColorValues");
-            RaisePropertyChanged("SurfaceBrush");
-        }
-
-        public Point GetPointFromIndex(int i, int j)
-        {
-            double x = MinX + (double)j / (Columns - 1) * (MaxX - MinX);
-            double y = MinY + (double)i / (Rows - 1) * (MaxY - MinY);
-            return new Point(x, y);
-        }
-
-        public Point3D[,] CreateDataArray(Func<double, double, double> f)
-        {
-            var data = new Point3D[Rows, Columns];
-            for (int i = 0; i < Rows; i++)
-                for (int j = 0; j < Columns; j++)
-                {
-                    var pt = GetPointFromIndex(i, j);
-                    data[i, j] = new Point3D(pt.X, pt.Y, f(pt.X, pt.Y));
-                }
-            return data;
         }
 
         // http://en.wikipedia.org/wiki/Numerical_differentiation

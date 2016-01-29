@@ -30,6 +30,7 @@
 
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="0">
+                    
                     <TextBlock Text="Demo Functions" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
 
                     <ComboBox 

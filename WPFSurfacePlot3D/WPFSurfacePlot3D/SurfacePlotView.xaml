@@ -42,7 +42,7 @@
 
             <!-- The plot visual (surface, axes and labels) -->
             <local:SurfacePlotVisual3D 
-                DataPoints="{Binding Data, UpdateSourceTrigger=PropertyChanged}" 
+                DataPoints="{Binding DataPoints, UpdateSourceTrigger=PropertyChanged}" 
                 ColorValues="{Binding ColorValues, UpdateSourceTrigger=PropertyChanged}" 
                 SurfaceBrush="{Binding SurfaceBrush, UpdateSourceTrigger=PropertyChanged}" 
                 />

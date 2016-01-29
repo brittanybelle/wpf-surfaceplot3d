@@ -32,7 +32,7 @@ namespace WPFSurfacePlot3D
         /// <summary>
         /// Used to control which demo function the user has chosen to display.
         /// </summary>
-        enum FunctionOptions { Sinc, Gaussian, Funnel, Origami, Simple };
+        enum FunctionOptions { Sinc, Ripple, Gaussian, Funnel, Origami, Simple };
 
         /// <summary>
         /// This function is called whenever the user selects a different demo function to plot.
@@ -55,7 +55,7 @@ namespace WPFSurfacePlot3D
             {
                 case FunctionOptions.Gaussian:
                     function = (x, y) => 5 * Math.Exp(-1 * Math.Pow(x, 2) / 4 - Math.Pow(y, 2) / 4) / (Math.Sqrt(2 * Math.PI));
-                    viewModel.PlotFunction(function, -5, 5);
+                    viewModel.PlotFunction(function, -5, 5, 200);
                     break;
 
                 case FunctionOptions.Sinc:
@@ -76,6 +76,11 @@ namespace WPFSurfacePlot3D
                 case FunctionOptions.Simple:
                     function = (x, y) => x * y;
                     viewModel.PlotFunction(function, -1, 1);
+                    break;
+
+                case FunctionOptions.Ripple:
+                    function = (x, y) => 0.25 * Math.Sin(Math.PI * Math.PI * x * y);
+                    viewModel.PlotFunction(function, 0, 2, 300);
                     break;
 
                 default:
