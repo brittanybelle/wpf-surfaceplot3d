@@ -22,6 +22,10 @@ namespace WPFSurfacePlot3D
 
     class SurfacePlotViewModel : INotifyPropertyChanged
     {
+        private int defaultSampleSize = 100;
+
+        //private double[] xDataPointsArray, yDataPointsArray;
+
         public SurfacePlotViewModel()
         {
             Title = "New Surface Plot";
@@ -37,9 +41,101 @@ namespace WPFSurfacePlot3D
             Columns = 91;
 
             Function = (x, y) => Math.Sin(x * y) * 0.5;
-            ColorCoding = ColorCoding.ByGradientY;
+            ColorCoding = ColorCoding.ByLights;
             UpdateModel();
+            //UpdatePlotData();
         }
+
+        #region === Public Methods ===
+
+
+        public void PlotFunction(Func<double, double, double> function, double minimumXY, double maximumXY)
+        {
+            PlotFunction(function, minimumXY, maximumXY, minimumXY, maximumXY, defaultSampleSize, defaultSampleSize);
+        }
+
+        public void PlotFunction(Func<double, double, double> function, double minimumXY, double maximumXY, int sampleSize)
+        {
+            PlotFunction(function, minimumXY, maximumXY, minimumXY, maximumXY, sampleSize, sampleSize);
+        }
+
+        public void PlotFunction(Func<double, double, double> function, double xMinimum, double xMaximum, double yMinimum, double yMaximum)
+        {
+            PlotFunction(function, xMinimum, xMaximum, yMinimum, yMaximum, defaultSampleSize, defaultSampleSize);
+        }
+
+        public void PlotFunction(Func<double, double, double> function, double xMinimum, double xMaximum, double yMinimum, double yMaximum, int sampleSize)
+        {
+            PlotFunction(function, xMinimum, xMaximum, yMinimum, yMaximum, sampleSize, sampleSize);
+        }
+
+        public void PlotFunction(Func<double, double, double> function, double xMinimum, double xMaximum, double yMinimum, double yMaximum, int xSampleSize, int ySampleSize)
+        {
+            // todo - implement checks to ensure the input parameters make sense. Maybe a SetXYRange internal method?
+            xMin = xMinimum;
+            xMax = xMaximum;
+            yMin = yMinimum;
+            yMax = yMaximum;
+
+            double[] xArray = CreateLinearlySpacedArray(xMinimum, xMaximum, xSampleSize);
+            double[] yArray = CreateLinearlySpacedArray(yMinimum, yMaximum, ySampleSize);
+
+            Data = CreateDataArrayFromFunction(function, xArray, yArray);
+            switch (ColorCoding)
+            {
+                case ColorCoding.ByGradientY:
+                    ColorValues = FindGradientY(Data);
+                    break;
+                case ColorCoding.ByLights:
+                    ColorValues = null;
+                    break;
+            }
+            RaisePropertyChanged("Data");
+            RaisePropertyChanged("ColorValues");
+            RaisePropertyChanged("SurfaceBrush");
+        }
+
+        #endregion
+
+        #region === Private Methods ===
+
+        private Point3D[,] CreateDataArrayFromFunction(Func<double, double, double> f, double[] xArray, double[] yArray)
+        {
+            Point3D[,] dataArray = new Point3D[xArray.Length, yArray.Length];
+            for (int i = 0; i < xArray.Length; i++)
+            {
+                double x = xArray[i];
+                for (int j = 0; j < yArray.Length; j++)
+                {
+                    double y = yArray[j];
+                    dataArray[i, j] = new Point3D(x, y, f(x, y));
+                }
+            }
+            return dataArray;
+        }
+
+        private double[] CreateLinearlySpacedArray(double minValue, double maxValue, int numberOfPoints)
+        {
+            double[] array = new double[numberOfPoints];
+            double intervalSize = (xMax - xMin) / (numberOfPoints - 1);
+            for (int i = 0; i < numberOfPoints; i++)
+            {
+                array[i] = minValue + i * intervalSize;
+            }
+            return array;
+        }
+
+        private void SetTicksAutomatically()
+        {
+            xTickMin = xMin;
+            xTickMax = xMax;
+            xNumberOfTicks = 10;
+            xTickInterval = (xTickMax - xTickMin) / xNumberOfTicks;
+        }
+
+        #endregion
+
+        #region === Properties & Event Handlers ===
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -51,21 +147,21 @@ namespace WPFSurfacePlot3D
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        
-        public double MinX { get; set; }
-        public double MinY { get; set; }
-        public double MaxX { get; set; }
-        public double MaxY { get; set; }
-        public int Rows { get; set; }
-        public int Columns { get; set; }
 
-        public Func<double, double, double> Function { get; set; }
-        public Point3D[,] Data { get; set; }
-        public double[,] ColorValues { get; set; }
+        private Point3D[,] dataPoints;
+        public Point3D[,] DataPoints
+        {
+            get { return dataPoints; }
+            set
+            {
+                dataPoints = value;
+                RaisePropertyChanged("DataPoints");
+            }
+        }
 
-        public ColorCoding ColorCoding { get; set; }
+        #endregion
 
-        #region String/Text Properties
+        #region === String/Text Properties ===
 
         private string title;
         public string Title
@@ -113,8 +209,8 @@ namespace WPFSurfacePlot3D
 
         #endregion
 
-        #region Boolean Properties
-        
+        #region === Boolean Properties ===
+
         private bool showSurfaceMesh;
         public bool ShowSurfaceMesh
         {
@@ -150,7 +246,7 @@ namespace WPFSurfacePlot3D
 
         #endregion
 
-        #region Double Properties
+        #region === Double Properties ===
 
         private double xMin;
         public double XMin
@@ -217,7 +313,7 @@ namespace WPFSurfacePlot3D
                 RaisePropertyChanged("ZMax");
             }
         }
-
+        
         private double xTickInterval;
         public double XTickInterval
         {
@@ -250,8 +346,39 @@ namespace WPFSurfacePlot3D
                 RaisePropertyChanged("ZTickInterval");
             }
         }
+        
+        #endregion
+
+        #region === Int Properties ===
+
+        private int xNumberOfPoints;
+        private int yNumberOfPoints;
+
+        private int xNumberOfTicks;
+        private int yNumberOfTicks;
+        private int zNumberOfTicks;
+
+        private double xTickMin, xTickMax, yTickMin, yTickMax, zTickMin, zTickMax;
+        //private double xTickInterval, yTickInterval, zTickInterval;
 
         #endregion
+
+
+
+        /* OLD STUFF */
+
+        public double MinX { get; set; }
+        public double MinY { get; set; }
+        public double MaxX { get; set; }
+        public double MaxY { get; set; }
+        public int Rows { get; set; }
+        public int Columns { get; set; }
+
+        public Func<double, double, double> Function { get; set; }
+        public Point3D[,] Data { get; set; }
+        public double[,] ColorValues { get; set; }
+
+        public ColorCoding ColorCoding { get; set; }
 
         public Model3DGroup Lights
         {

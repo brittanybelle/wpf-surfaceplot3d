@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace WPFSurfacePlot3D
 {
@@ -15,6 +16,14 @@ namespace WPFSurfacePlot3D
             DataContext = LayoutRoot.DataContext;
             hViewport.ZoomExtentsGesture = new KeyGesture(Key.Space);
         }
+
+        public Point3D[,] DataPoints
+        {
+            get { return (Point3D[,])GetValue(DataPointsProperty); }
+            set { SetValue(DataPointsProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataPointsProperty = DependencyProperty.Register("DataPoints", typeof(Point3D[,]), typeof(SurfacePlotView), new FrameworkPropertyMetadata(SurfacePlotVisual3D.SamplePoints));
 
         #region String/Text Properties
 

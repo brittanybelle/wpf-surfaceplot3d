@@ -30,8 +30,19 @@
 
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="0">
+                    <TextBlock Text="Demo Functions" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
+
+                    <ComboBox 
+                        x:Name="functionSelectorComboBox" 
+                        FontSize="12" 
+                        HorizontalAlignment="Stretch" 
+                        Margin="10" 
+                        SelectionChanged="FunctionSelectionWasChanged" 
+                        SelectedIndex="0" 
+                        />
+
                     <TextBlock Text="Plotting Options" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
-                    
+
                     <ExtendedToolkit:PropertyGrid 
                         x:Name="propertyGrid" 
                         SelectedObject="{Binding}" 

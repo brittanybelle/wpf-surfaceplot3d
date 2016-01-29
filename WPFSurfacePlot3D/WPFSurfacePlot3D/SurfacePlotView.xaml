@@ -26,6 +26,7 @@
             Grid.Row="1" 
             ZoomExtentsWhenLoaded="True" 
             PanGesture="LeftClick" 
+            ShowViewCube="False"
             ShowCoordinateSystem="{Binding ShowMiniCoordinates, UpdateSourceTrigger=PropertyChanged}" 
             CoordinateSystemLabelX="{Binding XAxisLabel, UpdateSourceTrigger=PropertyChanged}" 
             CoordinateSystemLabelY="{Binding YAxisLabel, UpdateSourceTrigger=PropertyChanged}" 
@@ -37,13 +38,13 @@
             </h:HelixViewport3D.Camera>
 
             <!-- Lights -->
-            <ModelVisual3D Content="{Binding Lights}"/>
+            <ModelVisual3D Content="{Binding Lights, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- The plot visual (surface, axes and labels) -->
             <local:SurfacePlotVisual3D 
-                DataPoints="{Binding Data}" 
-                ColorValues="{Binding ColorValues}" 
-                SurfaceBrush="{Binding SurfaceBrush}" 
+                DataPoints="{Binding Data, UpdateSourceTrigger=PropertyChanged}" 
+                ColorValues="{Binding ColorValues, UpdateSourceTrigger=PropertyChanged}" 
+                SurfaceBrush="{Binding SurfaceBrush, UpdateSourceTrigger=PropertyChanged}" 
                 />
 
         </h:HelixViewport3D>

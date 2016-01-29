@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace WPFSurfacePlot3D
 {
@@ -13,5 +7,7 @@ namespace WPFSurfacePlot3D
     /// </summary>
     public partial class App : Application
     {
+        // This app opens MainWindow on start.
+        // Thus, you can find the main application logic in the file: MainWindow.xaml.cs
     }
 }

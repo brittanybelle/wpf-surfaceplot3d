@@ -344,7 +344,7 @@ namespace WPFSurfacePlot3D
         {
             get
             {
-                int n = 30;
+                int n = 50;
                 Point3D[,] points = new Point3D[n, n];
                 for (int i = 0; i < n; i++)
                 {
