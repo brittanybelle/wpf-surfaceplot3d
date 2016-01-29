@@ -7,8 +7,6 @@ using System.Windows.Media.Media3D;
 
 namespace WPFSurfacePlot3D
 {
-    // http://reference.wolfram.com/mathematica/tutorial/ThreeDimensionalSurfacePlots.html
-
     public enum ColorCoding
     {
         /// <summary>
@@ -24,6 +22,36 @@ namespace WPFSurfacePlot3D
 
     class SurfacePlotViewModel : INotifyPropertyChanged
     {
+        public SurfacePlotViewModel()
+        {
+            Title = "New Surface Plot";
+            XAxisLabel = "x-Axis";
+            YAxisLabel = "y-Axis";
+            ZAxisLabel = "z-Axis";
+
+            MinX = 0;
+            MaxX = 3;
+            MinY = 0;
+            MaxY = 3;
+            Rows = 91;
+            Columns = 91;
+
+            Function = (x, y) => Math.Sin(x * y) * 0.5;
+            ColorCoding = ColorCoding.ByGradientY;
+            UpdateModel();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
+        
         public double MinX { get; set; }
         public double MinY { get; set; }
         public double MaxX { get; set; }
@@ -36,6 +64,194 @@ namespace WPFSurfacePlot3D
         public double[,] ColorValues { get; set; }
 
         public ColorCoding ColorCoding { get; set; }
+
+        #region String/Text Properties
+
+        private string title;
+        public string Title
+        {
+            get { return title; }
+            set
+            {
+                title = value;
+                RaisePropertyChanged("Title");
+            }
+        }
+
+        private string xAxisLabel;
+        public string XAxisLabel
+        {
+            get { return xAxisLabel; }
+            set
+            {
+                xAxisLabel = value;
+                RaisePropertyChanged("XAxisLabel");
+            }
+        }
+
+        private string yAxisLabel;
+        public string YAxisLabel
+        {
+            get { return yAxisLabel; }
+            set
+            {
+                yAxisLabel = value;
+                RaisePropertyChanged("YAxisLabel");
+            }
+        }
+
+        private string zAxisLabel;
+        public string ZAxisLabel
+        {
+            get { return zAxisLabel; }
+            set
+            {
+                zAxisLabel = value;
+                RaisePropertyChanged("ZAxisLabel");
+            }
+        }
+
+        #endregion
+
+        #region Boolean Properties
+        
+        private bool showSurfaceMesh;
+        public bool ShowSurfaceMesh
+        {
+            get { return showSurfaceMesh; }
+            set
+            {
+                showSurfaceMesh = value;
+                RaisePropertyChanged("ShowSurfaceMesh");
+            }
+        }
+
+        private bool showContourLines;
+        public bool ShowContourLines
+        {
+            get { return showContourLines; }
+            set
+            {
+                showContourLines = value;
+                RaisePropertyChanged("ShowContourLines");
+            }
+        }
+
+        private bool showMiniCoordinates;
+        public bool ShowMiniCoordinates
+        {
+            get { return showMiniCoordinates; }
+            set
+            {
+                showMiniCoordinates = value;
+                RaisePropertyChanged("ShowMiniCoordinates");
+            }
+        }
+
+        #endregion
+
+        #region Double Properties
+
+        private double xMin;
+        public double XMin
+        {
+            get { return xMin; }
+            set
+            {
+                xMin = value;
+                RaisePropertyChanged("XMin");
+            }
+        }
+
+        private double xMax;
+        public double XMax
+        {
+            get { return xMax; }
+            set
+            {
+                xMax = value;
+                RaisePropertyChanged("XMax");
+            }
+        }
+
+        private double yMin;
+        public double YMin
+        {
+            get { return yMin; }
+            set
+            {
+                yMin = value;
+                RaisePropertyChanged("YMin");
+            }
+        }
+
+        private double yMax;
+        public double YMax
+        {
+            get { return yMax; }
+            set
+            {
+                yMax = value;
+                RaisePropertyChanged("YMax");
+            }
+        }
+        
+        private double zMin;
+        public double ZMin
+        {
+            get { return zMin; }
+            set
+            {
+                zMin = value;
+                RaisePropertyChanged("ZMin");
+            }
+        }
+
+        private double zMax;
+        public double ZMax
+        {
+            get { return zMax; }
+            set
+            {
+                zMax = value;
+                RaisePropertyChanged("ZMax");
+            }
+        }
+
+        private double xTickInterval;
+        public double XTickInterval
+        {
+            get { return xTickInterval; }
+            set
+            {
+                xTickInterval = value;
+                RaisePropertyChanged("XTickInterval");
+            }
+        }
+
+        private double yTickInterval;
+        public double YTickInterval
+        {
+            get { return yTickInterval; }
+            set
+            {
+                yTickInterval = value;
+                RaisePropertyChanged("YTickInterval");
+            }
+        }
+
+        private double zTickInterval;
+        public double ZTickInterval
+        {
+            get { return zTickInterval; }
+            set
+            {
+                zTickInterval = value;
+                RaisePropertyChanged("ZTickInterval");
+            }
+        }
+
+        #endregion
 
         public Model3DGroup Lights
         {
@@ -74,20 +290,6 @@ namespace WPFSurfacePlot3D
                 }
                 return null;
             }
-        }
-
-        public SurfacePlotViewModel()
-        {
-            MinX = 0;
-            MaxX = 3;
-            MinY = 0;
-            MaxY = 3;
-            Rows = 91;
-            Columns = 91;
-
-            Function = (x, y) => Math.Sin(x * y) * 0.5;
-            ColorCoding = ColorCoding.ByGradientY;
-            UpdateModel();
         }
 
         private void UpdateModel()
@@ -151,17 +353,6 @@ namespace WPFSurfacePlot3D
                     K[i, j] = dz / dy;
                 }
             return K;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string property)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
         }
     }
 }

@@ -10,7 +10,9 @@ namespace WPFSurfacePlot3D
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new SurfacePlotViewModel();
+            SurfacePlotViewModel viewModel = new SurfacePlotViewModel();
+            propertyGrid.DataContext = viewModel;
+            surfacePlotView.DataContext = viewModel;
         }
 
         private void FileExit_Click(object sender, RoutedEventArgs e)

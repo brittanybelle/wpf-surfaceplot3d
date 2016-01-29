@@ -3,30 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
-        xmlns:local="clr-namespace:WPFSurfacePlot3D"
+        xmlns:ExtendedToolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:SurfacePlot="clr-namespace:WPFSurfacePlot3D"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
-    <DockPanel>
+        Title="MainWindow" Height="600" Width="1000">
+
+    <DockPanel x:Name="Parent">
+
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Export" IsEnabled="False"/>
+                <MenuItem Header="Export" IsEnabled="False" />
                 <Separator/>
-                <MenuItem Header="Exit" Click="FileExit_Click"/>
+                <MenuItem Header="Exit" Click="FileExit_Click" />
             </MenuItem>
         </Menu>
-        <h:HelixViewport3D x:Name="HViewPort" ZoomExtentsWhenLoaded="True" ShowCoordinateSystem="True" CoordinateSystemLabelX="X Axis">
-            <!-- Camera. Note: if "true", HelixViewport3D.ZoomExtentsWhenLoaded will figure out the position of the Camera -->
-            <h:HelixViewport3D.Camera>
-                <PerspectiveCamera LookDirection="1,1,-1" UpDirection="0,0,1"/>
-            </h:HelixViewport3D.Camera>
 
-            <!-- Lights -->
-            <ModelVisual3D Content="{Binding Lights}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" MinWidth="350" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="3*" MinWidth="200" />
+            </Grid.ColumnDefinitions>
 
-            <!-- The plot visual (surface, axes and labels) -->
-            <local:SurfacePlotVisual3D DataPoints="{Binding Data}" ColorValues="{Binding ColorValues}" SurfaceBrush="{Binding SurfaceBrush}"/>
+            <Border Grid.Column="0" Margin="0" BorderBrush="AliceBlue" BorderThickness="2" />
+            <Border Grid.Column="1" Margin="0" BorderBrush="AliceBlue" BorderThickness="2" />
 
-        </h:HelixViewport3D>
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="0">
+                    <TextBlock Text="Plotting Options" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
+                    
+                    <ExtendedToolkit:PropertyGrid 
+                        x:Name="propertyGrid" 
+                        SelectedObject="{Binding}" 
+                        AutoGenerateProperties="True" 
+                        ShowSearchBox="False"
+                        IsCategorized="False"
+                        ShowSortOptions="False"
+                        ShowSummary="False"
+                        ShowTitle="False"
+                        UpdateTextBoxSourceOnEnterKey="True"
+                        IsReadOnly="False"
+                        />
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+
+            <SurfacePlot:SurfacePlotView 
+                x:Name="surfacePlotView" 
+                Grid.Column="2"
+                Title="Sample Surface Plot"
+                />
+        </Grid>
+
     </DockPanel>
 </Window>

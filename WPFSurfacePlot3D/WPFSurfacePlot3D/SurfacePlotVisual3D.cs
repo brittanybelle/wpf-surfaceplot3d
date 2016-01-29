@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+
 
 namespace WPFSurfacePlot3D
 {
@@ -76,7 +78,36 @@ namespace WPFSurfacePlot3D
         private static void ModelWasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((SurfacePlotVisual3D)d).UpdateModel();
+            //((SurfacePlotVisual3D)d).RaiseModelUpdatedEvent();
+
         }
+
+        private ContentControl controlObject = new ContentControl();
+
+        /* Add event handler to push events up via an exposed property */
+        // (thanks, http://stackoverflow.com/questions/24870539/custom-events-from-user-control-to-parent-control-in-wpf)
+
+            /*
+        public static readonly RoutedEvent ModelUpdatedEvent = EventManager.RegisterRoutedEvent("ModelUpdated", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ContentControl));
+
+        public event RoutedEventHandler ModelUpdated
+        {
+            add { controlObject.AddHandler(ModelUpdatedEvent, value); }
+            remove { controlObject.RemoveHandler(ModelUpdatedEvent, value); }
+        }
+
+        private void RaiseModelUpdatedEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(SurfacePlotVisual3D.ModelUpdatedEvent);
+            controlObject.RaiseEvent(newEventArgs);
+        }
+
+        private void ValueWasChanged(object sender, RoutedEventArgs e)
+        {
+            RaiseModelUpdatedEvent();
+        } */
+
+
 
         /// <summary>
         /// This function updates the 3D visual model. It is called whenever a DependencyProperty of the SurfacePlotVisual3D object is called.
@@ -86,7 +117,7 @@ namespace WPFSurfacePlot3D
             this.Children.Clear(); // Necessary to remove BillboardTextVisual3D objects (?)
             Children.Add(modelContainer);
 
-            modelContainer.Content = CreateModel();
+            this.Content = CreateModel();
         }
 
         /// <summary>
@@ -265,7 +296,7 @@ namespace WPFSurfacePlot3D
             GeometryModel3D gridModel = new GeometryModel3D(gridBuilder.ToMesh(), Materials.Black);
 
             // Update model group
-            this.Children.Add(axesLabelsModel);
+            //this.Children.Add(axesLabelsModel);
             newModelGroup.Children.Add(surfaceModel);
             newModelGroup.Children.Add(surfaceMeshLinesModel);
             newModelGroup.Children.Add(gridModel);
@@ -328,5 +359,7 @@ namespace WPFSurfacePlot3D
                 return points;
             }
         }
+
+
     }
 }
