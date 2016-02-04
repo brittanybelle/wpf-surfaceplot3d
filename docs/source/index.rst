@@ -1,65 +1,62 @@
-.. WPF Surface Plot 3D documentation master file, created by
-   sphinx-quickstart on Thu Feb  4 22:51:39 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+WPF-SurfacePlot3D
+=================
 
-Welcome to WPF Surface Plot 3D's documentation!
-===============================================
-
-Contents:
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
 
+   intro
+   setup
+   tutorial
+   plottingfunctions
+   plottingdata
+   appearance
+   contribute
 
+Easy, attractive 3D plots in WPF
+--------------------------------
 
-Indices and tables
-==================
+WPF-SurfacePlot3D is a tiny C# library containing easy-to-use 3D surface plotting components for WPF.
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+You can get started in as few as four lines::
 
-
-
-$project
-========
-
-$project will solve your problem of where to start with documentation,
-by providing a basic explanation of how to do it easily.
-
-Look how easy it is to use:
-
-    import project
-    # Get your stuff done
-    project.do_stuff()
+    var myPlot = new SurfacePlotViewModel();
+    myPlotView.DataContext = myPlot;
+    function = (x, y) => x * y;
+    viewModel.PlotFunction(function, -1, 1);
 
 Features
 --------
 
-- Be awesome
-- Make things faster
+- Flexible data input formats:
+  - Plot functions directly
+  - Use your own 3D data arrays
+- Easy data binding for real-time updates
+- Leverage the beauty and power of Helix3D Toolkit
 
 Installation
 ------------
 
-Install $project by running:
+While the project is in beta, simply grab the class files from the Github repo and add them to your own project. Read more about getting started »
 
-    install project
+COMING SOON: Installation via NuGet package manager (planned for version 1.0.0)
 
 Contribute
 ----------
 
-- Issue Tracker: github.com/$project/$project/issues
-- Source Code: github.com/$project/$project
+This project is organized using `Github <https://github.com/brittanywelsh/wpf-surfaceplot3d>`_.
 
-Support
+- Please report all bugs, feature requests, and other issues through the `Issue Tracker <https://github.com/brittanywelsh/wpf-surfaceplot3d/issues>`_.
+- Feel free to add your thoughts to the `project wiki <https://github.com/brittanywelsh/wpf-surfaceplot3d/wiki>`_!
+
+Contact
 -------
 
-If you are having issues, please let us know.
-We have a mailing list located at: project@google-groups.com
+If you're having issues or just want to send along some feedback, feel free to email me: hello@brittanywelsh.com.
 
 License
 -------
 
-The project is licensed under the BSD license.
+This project is licensed under the `GNU General Public License (version 3) <http://www.gnu.org/licenses/gpl-3.0.en.html>`_.
