@@ -2,14 +2,17 @@ WPF-SurfacePlot3D
 =================
 
 .. toctree::
+   :caption: Getting Started
    :maxdepth: 2
 
-   :caption: Getting Started
    Introduction <self>
    setup
    tutorial
 
+.. toctree::
    :caption: User Manual
+   :maxdepth: 2
+
    plottingfunctions
    plottingdata
    appearance
