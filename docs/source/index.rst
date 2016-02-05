@@ -5,7 +5,7 @@ WPF-SurfacePlot3D
    :maxdepth: 2
 
    :caption: Getting Started
-   Introduction <index>
+   Introduction <self>
    setup
    tutorial
 
