@@ -1,24 +1,24 @@
 WPF-SurfacePlot3D
 =================
 
-Contents
---------
-
 .. toctree::
    :maxdepth: 2
 
-   intro
+   :caption: Getting Started
+   Introduction <index>
    setup
    tutorial
+
+   :caption: User Manual
    plottingfunctions
    plottingdata
    appearance
-   contribute
+
 
 Easy, attractive 3D plots in WPF
 --------------------------------
 
-WPF-SurfacePlot3D is a tiny C# library containing easy-to-use 3D surface plotting components for WPF.
+WPF-SurfacePlot3D is a tiny C# library containing easy-to-use 3D surface plotting components for WPF (.NET) applications.
 
 You can get started in as few as four lines::
 
@@ -31,17 +31,19 @@ Features
 --------
 
 - Flexible data input formats:
+
   - Plot functions directly
   - Use your own 3D data arrays
+
 - Easy data binding for real-time updates
-- Leverage the beauty and power of Helix3D Toolkit
+- Leverage the beauty and power of `Helix 3D Toolkit <https://github.com/helix-toolkit/helix-toolkit>`_
 
 Installation
 ------------
 
-While the project is in beta, simply grab the class files from the Github repo and add them to your own project. Read more about getting started »
+While the project is in beta, simply grab the class files from `the Github repo <https://github.com/brittanywelsh/wpf-surfaceplot3d>`_ and add them to your own project. For more information, read the :ref:`setup` section.
 
-COMING SOON: Installation via NuGet package manager (planned for version 1.0.0)
+COMING SOON: Installation via NuGet package manager (planned for version 1.0.0).
 
 Contribute
 ----------

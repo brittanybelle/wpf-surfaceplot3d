@@ -1,8 +1,5 @@
-Appearance
-=================
-
-Contents
---------
+Editing Plot Appearance
+=======================
 
 .. toctree::
    :maxdepth: 2

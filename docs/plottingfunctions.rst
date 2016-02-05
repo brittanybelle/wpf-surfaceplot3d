@@ -1,8 +1,5 @@
-Setup
+Plotting Functions
 =================
-
-Contents
---------
 
 .. toctree::
    :maxdepth: 2

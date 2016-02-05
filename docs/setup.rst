@@ -1,8 +1,7 @@
-Tutorial
-=================
+.. _setup:
 
-Contents
---------
+Installation
+============
 
 .. toctree::
    :maxdepth: 2

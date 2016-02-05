@@ -1,9 +1,6 @@
 Plotting 3D Data
 =================
 
-Contents
---------
-
 .. toctree::
    :maxdepth: 2
 
