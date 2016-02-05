@@ -1,2 +1,4 @@
 # wpf-surfaceplot3d
-Flexible, attractive 3D surface plotting in WPF (C#/.NET) using the Helix3D Toolkit.
+## Easy, attractive, flexible 3D surface plotting in WPF
+
+[![Documentation Status](http://readthedocs.org/projects/wpf-surfaceplot3d/badge/?version=latest)](http://wpf-surfaceplot3d.readthedocs.org/en/latest/?badge=latest)
