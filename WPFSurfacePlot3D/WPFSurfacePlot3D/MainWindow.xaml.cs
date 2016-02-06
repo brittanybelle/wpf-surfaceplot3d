@@ -9,7 +9,7 @@ namespace WPFSurfacePlot3D
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SurfacePlotViewModel viewModel;
+        private SurfacePlotModel viewModel;
 
         /// <summary>
         /// Initialize the main window (hence, this function runs on application start).
@@ -21,7 +21,7 @@ namespace WPFSurfacePlot3D
             InitializeComponent();
 
             // Initialize surface plot objects
-            viewModel = new SurfacePlotViewModel();
+            viewModel = new SurfacePlotModel();
             propertyGrid.DataContext = viewModel;
             surfacePlotView.DataContext = viewModel;
 
@@ -32,7 +32,7 @@ namespace WPFSurfacePlot3D
         /// <summary>
         /// Used to control which demo function the user has chosen to display.
         /// </summary>
-        enum FunctionOptions { Sinc, Ripple, Gaussian, Funnel, Origami, Simple };
+        enum FunctionOptions { Sinc, Ripple, Gaussian, Funnel, Origami, Simple, DataPlot };
 
         /// <summary>
         /// This function is called whenever the user selects a different demo function to plot.
@@ -81,6 +81,18 @@ namespace WPFSurfacePlot3D
                 case FunctionOptions.Ripple:
                     function = (x, y) => 0.25 * Math.Sin(Math.PI * Math.PI * x * y);
                     viewModel.PlotFunction(function, 0, 2, 300);
+                    break;
+
+                case FunctionOptions.DataPlot:
+                    double[,] arrayOfPoints = new double[10, 15];
+                    for (int i = 0; i < 10; i++)
+                    {
+                        for (int j = 0; j < 15; j++)
+                        {
+                            arrayOfPoints[i, j] = 10 * Math.Sin(Math.Sqrt(i * i + j * j)) / Math.Sqrt(i * i + j * j + 0.0001);
+                        }
+                    }
+                    viewModel.PlotData(arrayOfPoints);
                     break;
 
                 default:

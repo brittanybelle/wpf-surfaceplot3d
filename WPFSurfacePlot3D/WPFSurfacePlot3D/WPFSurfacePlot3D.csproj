@@ -90,7 +90,7 @@
     <Compile Include="SurfacePlotView.xaml.cs">
       <DependentUpon>SurfacePlotView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SurfacePlotViewModel.cs" />
+    <Compile Include="SurfacePlotModel.cs" />
     <Compile Include="SurfacePlotVisual3D.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

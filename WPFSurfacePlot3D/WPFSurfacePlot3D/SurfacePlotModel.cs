@@ -20,15 +20,15 @@ namespace WPFSurfacePlot3D
         ByGradientY
     }
 
-    class SurfacePlotViewModel : INotifyPropertyChanged
+    class SurfacePlotModel : INotifyPropertyChanged
     {
         private int defaultFunctionSampleSize = 100;
-        
+
         // So the overall goal of this section is to output the appropriate values to SurfacePlotVisual3D - namely,
         // - DataPoints as Point3D, plus xAxisTicks (and y, z) as double[]
         // - plus all the appropriate properties, which can be directly edited/bindable by the user
-        
-        public SurfacePlotViewModel()
+
+        public SurfacePlotModel()
         {
             Title = "New Surface Plot";
             XAxisLabel = "x-Axis";
@@ -44,21 +44,45 @@ namespace WPFSurfacePlot3D
 
         #region === Public Methods ===
 
-        /*
+
         public void PlotData(double[,] zData2DArray)
         {
-            // Uses indices as x, y values
+            int n = zData2DArray.GetLength(0);
+            int m = zData2DArray.GetLength(1);
+            Point3D[,] newDataArray = new Point3D[n, m];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Point3D point = new Point3D(i, j, zData2DArray[i, j]);
+                    newDataArray[i, j] = point;
+                }
+            }
+            dataPoints = newDataArray;
+            RaisePropertyChanged("DataPoints");
+        }
+
+        public void PlotData(double[,] zData2DArray, double xMinimum, double xMaximum, double yMinimum, double yMaximum)
+        {
+
         }
 
         public void PlotData(double[,] zData2DArray, double[] xArray, double[] yArray)
         {
             // Note - check that dimensions match!!
+
+
         }
 
         public void PlotData(Point3D[,] point3DArray)
         {
             // Directly plot from a Point3D array
-        } */
+        }
+
+        public void PlotFunction(Func<double, double, double> function)
+        {
+            PlotFunction(function, -1, 1, -1, 1, defaultFunctionSampleSize, defaultFunctionSampleSize);
+        }
 
         public void PlotFunction(Func<double, double, double> function, double minimumXY, double maximumXY)
         {
@@ -112,17 +136,17 @@ namespace WPFSurfacePlot3D
 
         private Point3D[,] CreateDataArrayFromFunction(Func<double, double, double> f, double[] xArray, double[] yArray)
         {
-            Point3D[,] dataArray = new Point3D[xArray.Length, yArray.Length];
+            Point3D[,] newDataArray = new Point3D[xArray.Length, yArray.Length];
             for (int i = 0; i < xArray.Length; i++)
             {
                 double x = xArray[i];
                 for (int j = 0; j < yArray.Length; j++)
                 {
                     double y = yArray[j];
-                    dataArray[i, j] = new Point3D(x, y, f(x, y));
+                    newDataArray[i, j] = new Point3D(x, y, f(x, y));
                 }
             }
-            return dataArray;
+            return newDataArray;
         }
 
         private double[] CreateLinearlySpacedArray(double minValue, double maxValue, int numberOfPoints)
