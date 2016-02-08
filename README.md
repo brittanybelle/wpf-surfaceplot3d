@@ -12,4 +12,4 @@ function = (x, y) => x * y;
 viewModel.PlotFunction(function, -1, 1);
 ```
 
-[Check out the documentation](http://readthedocs.org/projects/wpf-surfaceplot3d/badge/?version=latest) for more information!
+[Check out the documentation](http://wpf-surfaceplot3d.readthedocs.org) for more information!
