@@ -1,23 +1,6 @@
 WPF-SurfacePlot3D
 =================
 
-.. toctree::
-   :caption: Getting Started
-   :maxdepth: 2
-
-   Introduction <self>
-   setup
-   tutorial
-
-.. toctree::
-   :caption: User Manual
-   :maxdepth: 2
-
-   plottingfunctions
-   plottingdata
-   appearance
-
-
 Easy, attractive 3D plots in WPF
 --------------------------------
 
@@ -36,7 +19,7 @@ Features
 - Flexible data input formats:
 
   - Plot functions directly
-  - Use your own 3D data arrays
+  - Use your own data arrays
 
 - Easy data binding for real-time updates
 - Leverage the beauty and power of `Helix 3D Toolkit <https://github.com/helix-toolkit/helix-toolkit>`_
@@ -44,7 +27,7 @@ Features
 Installation
 ------------
 
-While the project is in beta, simply grab the class files from `the Github repo <https://github.com/brittanywelsh/wpf-surfaceplot3d>`_ and add them to your own project. For more information, read the :ref:`setup` section.
+While the project is in beta, simply grab the class files from `the Github repo <https://github.com/brittanywelsh/wpf-surfaceplot3d>`_ and add them to your own project. For more information, read the :ref:`install` section.
 
 COMING SOON: Installation via NuGet package manager (planned for version 1.0.0).
 
@@ -53,7 +36,7 @@ Contribute
 
 This project is organized using `Github <https://github.com/brittanywelsh/wpf-surfaceplot3d>`_.
 
-- Please report all bugs, feature requests, and other issues through the `Issue Tracker <https://github.com/brittanywelsh/wpf-surfaceplot3d/issues>`_.
+- Please report all bugs, feature requests, and other issues through the `issue tracker <https://github.com/brittanywelsh/wpf-surfaceplot3d/issues>`_.
 - Feel free to add your thoughts to the `project wiki <https://github.com/brittanywelsh/wpf-surfaceplot3d/wiki>`_!
 
 Contact
@@ -65,3 +48,25 @@ License
 -------
 
 This project is licensed under the `GNU General Public License (version 3) <http://www.gnu.org/licenses/gpl-3.0.en.html>`_.
+
+.. toctree::
+   :caption: Getting Started
+   :maxdepth: 2
+
+   Introduction <self>
+   install
+   tutorial
+
+.. toctree::
+   :caption: User Manual
+   :maxdepth: 2
+
+   plottingfunctions
+   plottingdata
+   appearance
+
+.. toctree::
+   :caption: Complete API Reference
+   :maxdepth: 2
+
+   surfaceplotmodel
