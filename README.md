@@ -1,4 +1,4 @@
-# Warning: this library is not actively maintained
+# Warning: this project is not actively maintained
 
 This project is free to use as you see fit (for example, as a reference or starter point for a 3D plotting library in WPF). However, please be aware that it is NOT actively maintained, and has not been updated in years. I do not have time to respond to requests or questions; sorry.
 
